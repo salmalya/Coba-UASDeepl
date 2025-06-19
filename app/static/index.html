@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>RAG QA Demo</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 2rem; max-width: 800px; margin: auto; }
+    textarea, input, button, select { width: 100%; margin-top: 1rem; font-size: 1rem; }
+    .output { margin-top: 2rem; padding: 1rem; border: 1px solid #ccc; border-radius: 5px; background: #f9f9f9; }
+  </style>
+</head>
+<body>
+  <h1>BPS QA System</h1>
+  <label for="mode">Choose QA Mode:</label>
+  <select id="mode">
+    <option value="semantic">Semantic RAG</option>
+    <option value="kg">Knowledge Graph RAG</option>
+  </select>
+
+  <label for="question">Ask a question:</label>
+  <textarea id="question" rows="3"></textarea>
+  <button onclick="submitQuestion()">Submit</button>
+
+  <div class="output" id="answerBox" style="display:none">
+    <h3>Answer:</h3>
+    <p id="answer"></p>
+
+    <div id="contextSection">
+      <h4>Context Used:</h4>
+      <pre id="context"></pre>
+    </div>
+
+    <div id="relationSection" style="display:none">
+      <h4>Graph Relations Retrieved:</h4>
+      <pre id="relations"></pre>
+    </div>
+  </div>
+
+  <script>
+    async function submitQuestion() {
+      const question = document.getElementById("question").value;
+      const mode = document.getElementById("mode").value;
+
+      const endpoint = mode === "kg" ? "/query-kg" : "/query";
+      const res = await fetch(endpoint, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ question })
+      });
+
+      const data = await res.json();
+      document.getElementById("answer").textContent = data.answer || data.error;
+      // document.getElementById("contextBox").style.display = "block";
+      document.getElementById("answerBox").style.display = "block";
+
+      if (mode === "semantic") {
+        document.getElementById("contextSection").style.display = "block";
+        document.getElementById("relationSection").style.display = "none";
+        document.getElementById("context").textContent = data.context_used || "";
+      } else {
+        document.getElementById("contextSection").style.display = "block";
+        document.getElementById("relationSection").style.display = "block";
+        document.getElementById("context").textContent = data.raw_context?.join("\n") || "";
+        document.getElementById("relations").textContent = data.graph_relations?.join("\n") || "";
+      }
+    }
+  </script>
+</body>
+</html>
