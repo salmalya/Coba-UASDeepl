@@ -6,13 +6,48 @@ Proyek ini menggunakan **Retrieval-Augmented Generation (RAG)** dengan model dar
 
 ## 📋 Persiapan / Requirement
 
-1. **Buat API key** di situs [huggingface.co](https://huggingface.co)
-2. **Salin API key** ke file `.env`
-3. **Jalankan backend** menggunakan PowerShell (Run as Administrator), lalu jalankan perintah berikut dari direktori root proyek:
+1. **Buat virtual environment:**
+
+    ```bash
+    python -m venv rag-env
+    ```
+
+2. **Aktifkan virtual environment:**
+
+    - **Windows:**
+
+        ```bash
+        rag-env\Scripts\activate
+        ```
+
+    - **Mac/Linux:**
+
+        ```bash
+        source rag-env/bin/activate
+        ```
+
+3. **Install dependencies dari `requirements.txt`:**
+
+    ```bash
+    pip install -r requirements.txt
+    ```
+
+4. **Buat API key di** [huggingface.co](https://huggingface.co), lalu:
+    - Tambahkan ke file `.env` pada root proyek seperti berikut:
+
+    ```env
+    HUGGINGFACEHUB_API_TOKEN=your_api_key_here
+    ```
+
+5. **(Khusus Windows)** Jalankan PowerShell sebagai Administrator dan jalankan:
 
     ```powershell
     Set-ExecutionPolicy RemoteSigned -Scope Process
-    .\rag-env\Scripts\activate
+    ```
+
+6. **Jalankan server FastAPI:**
+
+    ```bash
     uvicorn app.main:app --reload
     ```
 
@@ -21,12 +56,11 @@ Proyek ini menggunakan **Retrieval-Augmented Generation (RAG)** dengan model dar
 ## 🧪 Akses API
 
 - **Swagger UI:** [http://localhost:8000/docs](http://localhost:8000/docs)
-- **Tampilan HTML:** [http://localhost:8000/](http://localhost:8000/)
+- **Tampilan HTML (frontend):** [http://localhost:8000/](http://localhost:8000/)
 
 ---
 
 ## 💬 Contoh Pertanyaan
 
+```text
 "how many people work in Konstruksi sector in Februari 2024"
-
----
