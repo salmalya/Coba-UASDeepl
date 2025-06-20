@@ -4,7 +4,7 @@ import pandas as pd
 import re
 
 # Path ke file mentah dari BPS
-csv_path = "data/penduduk-15-tahunCURANG.csv"
+csv_path = "data/penduduk-15-tahun.csv"
 output_path = "data/penduduk.csv"
 
 # Baca data, skip baris judul pertama
